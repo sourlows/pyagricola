@@ -54,7 +54,7 @@ class GameBoard(object):
     }
 
     def __init__(self):
-        self.available_actions = self.DEFAULT_ACTIONS
+        self.available_actions = copy.deepcopy(self.DEFAULT_ACTIONS)
 
         # determine the order in which actions will become available to the player (random)
         self._upcoming_actions_keys = []
