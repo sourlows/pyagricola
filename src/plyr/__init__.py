@@ -1,14 +1,14 @@
 import logging
-from Player.family_member import FamilyMember
+from plyr.family_member import FamilyMember
 
 __author__ = 'djw'
 """
-This module houses the Player class and game entities under its control
+This module houses the plyr class and game entities under its control
 """
 
 class Player(object):
     """
-    The representation of the Player and his items/properties
+    The representation of the plyr and his items/properties
     """
 
     def __init__(self):
