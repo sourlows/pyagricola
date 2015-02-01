@@ -87,4 +87,3 @@ class GameBoard(object):
         # make the next action available
         next_action_key = self._upcoming_actions_keys.pop(0)
         self.available_actions.update({next_action_key: self._all_actions[next_action_key]})
-        logging.debug('Available actions: %s', self.available_actions)
