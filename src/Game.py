@@ -1,4 +1,5 @@
 import logging
+import sys
 
 __author__ = 'djw'
 
@@ -36,8 +37,14 @@ class Game(object):
         return score
 
 
-
-# start everything!
+# !ENTRY POINT!
 if __name__ == "__main__":
+    # set up logging
+    log_level = logging.CRITICAL
+    if len(sys.argv) == 2 and sys.argv[1] == '-d':
+            log_level = logging.DEBUG
+    logging.basicConfig(format='%(levelname)s: %(message)s', level=log_level)
+
+    # run game
     game = Game()
     game.run()
