@@ -15,11 +15,11 @@ class Game(object):
     current_round = 1
 
     # The number of rounds played before the game ends
-    GAME_LENGTH = 15
+    GAME_LENGTH = 14
 
     def run(self):
         # execute the iterative flow of the game
-        while self.current_round < 15:
+        while self.current_round <= self.GAME_LENGTH:
             print 'Round: %s' % self.current_round
             self.current_round += 1
         self.end()
