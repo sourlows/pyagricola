@@ -1,5 +1,6 @@
 import logging
 import sys
+from player import Player
 
 __author__ = 'djw'
 
@@ -11,6 +12,7 @@ class Game(object):
     def __init__(self):
         # set up game parameters and initialize data structures
         logging.debug('initializing')
+        self.player = Player()
 
     # The current round of play
     current_round = 1
@@ -21,6 +23,7 @@ class Game(object):
     def run(self):
         # execute the iterative flow of the game
         while self.current_round <= self.GAME_LENGTH:
+            self.player.update()
             print 'Round: %s' % self.current_round
             self.current_round += 1
         self.end()
