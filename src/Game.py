@@ -1,6 +1,6 @@
 import logging
 import sys
-from plyr import Player
+from player import Player
 
 __author__ = 'djw'
 
@@ -34,8 +34,8 @@ class Game(object):
         print 'Your score was: %s' % score
 
     def calculate_final_score(self):
-        # calculate the plyr's final score
-        logging.debug('calculating final score for plyr')
+        # calculate the player's final score
+        logging.debug('calculating final score for player')
         score = 0  # get stuff here
         return score
 
