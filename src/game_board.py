@@ -56,23 +56,19 @@ class GameBoard(object):
     def __init__(self):
         self.available_actions = copy.deepcopy(self.DEFAULT_ACTIONS)
 
-        # determine the order in which actions will become available to the player (random)
-        self._upcoming_actions_keys = []
-        self._upcoming_actions_keys.extend(self._get_shuffled_keys_for_dict(self.STAGE_ONE_ACTIONS))
-        self._upcoming_actions_keys.extend(self._get_shuffled_keys_for_dict(self.STAGE_TWO_ACTIONS))
-        self._upcoming_actions_keys.extend(self._get_shuffled_keys_for_dict(self.STAGE_THREE_ACTIONS))
-        self._upcoming_actions_keys.extend(self._get_shuffled_keys_for_dict(self.STAGE_FOUR_ACTIONS))
-        self._upcoming_actions_keys.extend(self._get_shuffled_keys_for_dict(self.STAGE_FIVE_ACTIONS))
-        self._upcoming_actions_keys.extend(self._get_shuffled_keys_for_dict(self.STAGE_SIX_ACTIONS))
+        all_stages = [self.STAGE_ONE_ACTIONS, self.STAGE_TWO_ACTIONS, self.STAGE_THREE_ACTIONS, self.STAGE_FOUR_ACTIONS,
+                      self.STAGE_FIVE_ACTIONS, self.STAGE_SIX_ACTIONS]
 
-        # build a directory of all actions for lookup purposes only
+        # a list of the keys of upcoming actions, with the first element being the key for the next available action
+        self._upcoming_actions_keys = []
+
+        # a directory of all possible board actions for lookup purposes only
         self._all_actions = copy.deepcopy(self.DEFAULT_ACTIONS)
-        self._all_actions.update(self.STAGE_ONE_ACTIONS)
-        self._all_actions.update(self.STAGE_TWO_ACTIONS)
-        self._all_actions.update(self.STAGE_THREE_ACTIONS)
-        self._all_actions.update(self.STAGE_FOUR_ACTIONS)
-        self._all_actions.update(self.STAGE_FIVE_ACTIONS)
-        self._all_actions.update(self.STAGE_SIX_ACTIONS)
+
+        for stage in all_stages:
+            # determine the order in which actions will become available to the player (random)
+            self._upcoming_actions_keys.extend(self._get_shuffled_keys_for_dict(stage))
+            self._all_actions.update(stage)
 
     def _get_shuffled_keys_for_dict(self, any_dict):
         """
