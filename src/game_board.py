@@ -1,7 +1,29 @@
 import copy
 import logging
 from random import shuffle
+from actions.take import TakeWoodAction, TakeReedAction, TakeClayAction
+
 __author__ = 'djw'
+
+
+class ActionSpace(object):
+    """
+    A space on the gameboard that allows a player to perform an action
+    """
+
+    def __init__(self, action):
+        self.action = action
+        self.is_occupied = False
+
+    def take(self, player):
+        """
+        Occupy this space and execute its action(s)
+        """
+        self.is_occupied = True
+        self.action.run(player=player)
+
+    def clear(self):
+        self.is_occupied = False
 
 
 class GameBoard(object):
@@ -15,9 +37,9 @@ class GameBoard(object):
         'Plow': 'Plow field action here',
         'Occupation': 'Occupation action here',
         'Laborer': 'Day laborer action here',
-        'Wood': 'Take wood action here',
-        'Clay': 'Take clay action here',
-        'Reed': 'Take reed action here',
+        'Wood': ActionSpace(action=TakeWoodAction()),
+        'Clay': ActionSpace(action=TakeClayAction()),
+        'Reed': ActionSpace(action=TakeReedAction()),
         'Fishing': 'Take fishing action here',
     }
 
