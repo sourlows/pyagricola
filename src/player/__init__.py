@@ -12,7 +12,10 @@ class Player(object):
     """
 
     def __init__(self):
-        self.family_members = [FamilyMember(is_adult=True), FamilyMember()]
+        self.family_members = [FamilyMember(is_adult=True), FamilyMember(is_adult=True)]
+        self.clay = 0
+        self.reed = 0
+        self.wood = 0
 
     def update(self):
         """ Called at the very beginning of a new turn AFTER harvest """
