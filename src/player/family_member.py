@@ -15,7 +15,7 @@ class FamilyMember(object):
         return 2 if self.is_adult else 1
 
     def update(self):
-        """ Called at the very beginning of a new turn AFTER harvest """
+        """ Called at the very beginning of a new turn """
         if not self.is_adult:
             self.is_adult = True  # family members are only newborn on the turn they are created
         self.currently_working = False

@@ -1,7 +1,7 @@
 import copy
 import logging
 from random import shuffle
-from actions.take import TakeWoodAction, TakeReedAction, TakeClayAction, TestAction
+from actions.take import TakeWoodAction, TakeReedAction, TakeClayAction, TestAction, TakeGrainAction
 
 __author__ = 'djw'
 
@@ -38,7 +38,7 @@ class GameBoard(object):
     DEFAULT_ACTIONS = {
         'Rooms': ActionSpace(action=TestAction()),
         'Starting': ActionSpace(action=TestAction()),
-        'Grain': ActionSpace(action=TestAction()),
+        'Grain': ActionSpace(action=TakeGrainAction()),
         'Plow': ActionSpace(action=TestAction()),
         'Occupation': ActionSpace(action=TestAction()),
         'Laborer': ActionSpace(action=TestAction()),
@@ -106,7 +106,7 @@ class GameBoard(object):
         return keys
 
     def update(self):
-        """ Called at the very beginning of a new turn AFTER harvest """
+        """ Called at the very beginning of a new turn """
         if not self._upcoming_actions_keys:
             logging.error('No more upcoming actions')
             return

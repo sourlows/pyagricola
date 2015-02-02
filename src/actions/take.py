@@ -58,6 +58,16 @@ class TakeWoodAction(Action):
     def describe(self):
         return 'Take %s wood.' % self.current_wood
 
+class TakeGrainAction(Action):
+    """
+
+    """
+
+    def process(self, player, **kwargs):
+        player.grain += 1
+
+    def describe(self):
+        return 'Take 1 grain.'
 
 class TestAction(Action):
     """

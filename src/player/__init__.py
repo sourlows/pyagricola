@@ -16,6 +16,7 @@ class Player(object):
         self.clay = 0
         self.reed = 0
         self.wood = 0
+        self.grain = 0
 
     def update(self):
         """ Called at the very beginning of a new turn AFTER harvest """
