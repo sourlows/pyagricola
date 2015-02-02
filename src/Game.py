@@ -29,6 +29,7 @@ class Game(object):
             self.game_board.update()
             print 'Round: %s' % self.current_round
             action = self.get_action_input()
+            self.game_board.available_actions[action].take(self.player)
             self.current_round += 1
         self.end()
 

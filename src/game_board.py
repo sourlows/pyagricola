@@ -22,8 +22,9 @@ class ActionSpace(object):
         self.is_occupied = True
         self.action.run(player=player)
 
-    def clear(self):
+    def update(self):
         self.is_occupied = False
+        self.action.update()
 
     def describe(self):
         occupied_char = "x" if self.is_occupied else "_"
@@ -113,6 +114,9 @@ class GameBoard(object):
         # make the next action available
         next_action_key = self._upcoming_actions_keys.pop(0)
         self.available_actions.update({next_action_key: self._all_actions[next_action_key]})
+
+        for key, action_space in self.available_actions.iteritems():
+            action_space.update()
 
     def draw(self):
         for key, action_space in self.available_actions.iteritems():
