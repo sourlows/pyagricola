@@ -17,6 +17,9 @@ class TakeClayAction(Action):
         player.clay += self.current_clay
         self.current_clay = 0
 
+    def describe(self):
+        return 'Take %s clay.' % self.current_clay
+
 
 class TakeReedAction(Action):
     """
@@ -33,6 +36,9 @@ class TakeReedAction(Action):
         player.reed += self.current_reed
         self.current_reed = 0
 
+    def describe(self):
+        return 'Take %s reed.' % self.current_reed
+
 
 class TakeWoodAction(Action):
     """
@@ -48,3 +54,21 @@ class TakeWoodAction(Action):
     def process(self, player, **kwargs):
         player.wood += self.current_wood
         self.current_wood = 0
+
+    def describe(self):
+        return 'Take %s wood.' % self.current_wood
+
+
+class TestAction(Action):
+    """
+    Filler while other actions are not yet implemented, does nothing
+    """
+
+    def update(self):
+        pass
+
+    def process(self, player, **kwargs):
+        pass
+
+    def describe(self):
+        return 'Filler action to be implemented later.'

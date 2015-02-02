@@ -39,3 +39,9 @@ class Action(object):
     def update(self):
         """ Called at the very beginning of a new turn AFTER harvest """
         raise NotImplementedError()
+
+    def describe(self):
+        """
+        Return a string representation of this action. An explanation of what it does.
+        """
+        raise NotImplementedError()

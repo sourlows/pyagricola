@@ -48,8 +48,10 @@ class Game(object):
         if action_input in self.game_board.available_actions.keys():
             print 'valid action: %s' % action_input
             return action_input
+        elif action_input == 'player':
+            self.player.draw()
         elif action_input == '-a':
-            print self.game_board.available_actions.keys()
+            self.game_board.draw()
         else:
             print 'invalid action: %s' % action_input
             print 'type -a to see a list of available actions'

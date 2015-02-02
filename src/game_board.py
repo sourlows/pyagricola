@@ -1,7 +1,7 @@
 import copy
 import logging
 from random import shuffle
-from actions.take import TakeWoodAction, TakeReedAction, TakeClayAction
+from actions.take import TakeWoodAction, TakeReedAction, TakeClayAction, TestAction
 
 __author__ = 'djw'
 
@@ -25,54 +25,58 @@ class ActionSpace(object):
     def clear(self):
         self.is_occupied = False
 
+    def describe(self):
+        occupied_char = "x" if self.is_occupied else "_"
+        return "|%s|%s" % (occupied_char, self.action.describe())
+
 
 class GameBoard(object):
     """
     Manages the game board and actions available to the player
     """
     DEFAULT_ACTIONS = {
-        'Rooms': 'Build rooms and/or Build stables action here',
-        'Starting': 'Starting player and/or build minor improvement action here',
-        'Grain': 'Take grain action here',
-        'Plow': 'Plow field action here',
-        'Occupation': 'Occupation action here',
-        'Laborer': 'Day laborer action here',
+        'Rooms': ActionSpace(action=TestAction()),
+        'Starting': ActionSpace(action=TestAction()),
+        'Grain': ActionSpace(action=TestAction()),
+        'Plow': ActionSpace(action=TestAction()),
+        'Occupation': ActionSpace(action=TestAction()),
+        'Laborer': ActionSpace(action=TestAction()),
         'Wood': ActionSpace(action=TakeWoodAction()),
         'Clay': ActionSpace(action=TakeClayAction()),
         'Reed': ActionSpace(action=TakeReedAction()),
-        'Fishing': 'Take fishing action here',
+        'Fishing': ActionSpace(action=TestAction()),
     }
 
     STAGE_ONE_ACTIONS = {
-        'Sheep': 'Take sheep action here',
-        'Sow': 'Sow and/or Bake bread action here',
-        'Improvement': 'Build major/minor Improvement action here',
-        'Fences': 'Improvement action here',
+        'Sheep': ActionSpace(action=TestAction()),
+        'Sow': ActionSpace(action=TestAction()),
+        'Improvement': ActionSpace(action=TestAction()),
+        'Fences': ActionSpace(action=TestAction()),
     }
 
     STAGE_TWO_ACTIONS = {
-        'Renovate': 'Renovate + build improvement action here',
-        'Stone': 'Take stone action here',
-        'Growth': 'Family growth + build minor improvement action here',
+        'Renovate': ActionSpace(action=TestAction()),
+        'Stone': ActionSpace(action=TestAction()),
+        'Growth': ActionSpace(action=TestAction()),
     }
 
     STAGE_THREE_ACTIONS = {
-        'Boar': 'Take boar action here',
-        'Vegetable': 'Take vegetable action here',
+        'Boar': ActionSpace(action=TestAction()),
+        'Vegetable': ActionSpace(action=TestAction()),
     }
 
     STAGE_FOUR_ACTIONS = {
-        'Cattle': 'Take cattle action here',
-        'Stone2': 'Take stone action here',
+        'Cattle': ActionSpace(action=TestAction()),
+        'Stone2': ActionSpace(action=TestAction()),
     }
 
     STAGE_FIVE_ACTIONS = {
-        'PlowAndSow': 'Plow field and sow action here',
-        'Overgrowth': 'Family growth without room action here',
+        'PlowAndSow': ActionSpace(action=TestAction()),
+        'Overgrowth': ActionSpace(action=TestAction()),
     }
 
     STAGE_SIX_ACTIONS = {
-        'RenovateFence': 'Renovate and build fences action here',
+        'RenovateFence': ActionSpace(action=TestAction()),
     }
 
     def __init__(self):
@@ -109,3 +113,7 @@ class GameBoard(object):
         # make the next action available
         next_action_key = self._upcoming_actions_keys.pop(0)
         self.available_actions.update({next_action_key: self._all_actions[next_action_key]})
+
+    def draw(self):
+        for key, action_space in self.available_actions.iteritems():
+            print '%s|%s' %(action_space.describe(), key)

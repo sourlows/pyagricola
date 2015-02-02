@@ -24,3 +24,7 @@ class Player(object):
             logging.debug('Food cost: %s' % member.food_cost)
             logging.debug('Currently working: %s' % member.currently_working)
             member.update()
+
+    def draw(self):
+        print "Family Members: %s | Wood: %s | Clay: %s | Reed: %s" % \
+              (len(self.family_members), self.wood, self.clay, self.reed)
