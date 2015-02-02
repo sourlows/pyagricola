@@ -28,6 +28,7 @@ class Game(object):
             self.player.update()
             self.game_board.update()
             print 'Round: %s' % self.current_round
+            action = self.get_action_input()
             self.current_round += 1
         self.end()
 
@@ -41,6 +42,18 @@ class Game(object):
         logging.debug('calculating final score for player')
         score = 0  # get stuff here
         return score
+
+    def get_action_input(self):
+        action_input = raw_input('Please type an action: ')
+        if action_input in self.game_board.available_actions.keys():
+            print 'valid action: %s' % action_input
+            return action_input
+        elif action_input == '-a':
+            print self.game_board.available_actions.keys()
+        else:
+            print 'invalid action: %s' % action_input
+            print 'type -a to see a list of available actions'
+        return self.get_action_input()
 
 
 # !ENTRY POINT!
