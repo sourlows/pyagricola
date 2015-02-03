@@ -18,6 +18,11 @@ class Player(object):
         self.wood = 0
         self.grain = 0
 
+    @property
+    def has_idle_family_members(self):
+        """ :return: True if the player has at least one idle family member """
+        return next((fm for fm in self.family_members if fm.currently_working), None)
+
     def update(self):
         """ Called at the very beginning of a new turn AFTER harvest """
         logging.debug('Family Members before update: ')
