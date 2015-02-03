@@ -30,8 +30,11 @@ class Game(object):
             print 'Round: %s' % self.current_round
             while self.player.has_idle_family_members:
                 action = self.get_action_input()
-                self.game_board.available_actions[action].take(self.player)
-                self.player.send_family_member_to_work()
+                if not self.game_board.available_actions[action].is_occupied:
+                    self.game_board.available_actions[action].take(self.player)
+                    self.player.send_family_member_to_work()
+                else:
+                    print 'The %s space is already occupied. Type -a to see the board.' % action
             self.current_round += 1
         self.end()
 
@@ -49,7 +52,6 @@ class Game(object):
     def get_action_input(self):
         action_input = raw_input('Please type an action: ')
         if action_input in self.game_board.available_actions.keys():
-            print 'valid action: %s' % action_input
             return action_input
         elif action_input == 'player':
             self.player.draw()

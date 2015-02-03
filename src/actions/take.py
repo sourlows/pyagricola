@@ -15,6 +15,7 @@ class TakeClayAction(Action):
 
     def process(self, player, **kwargs):
         player.clay += self.current_clay
+        print "Took %s clay. Total clay: %s" % (self.current_clay, player.clay)
         self.current_clay = 0
 
     def describe(self):
@@ -34,6 +35,7 @@ class TakeReedAction(Action):
 
     def process(self, player, **kwargs):
         player.reed += self.current_reed
+        print "Took %s reed. Total reed: %s" % (self.current_reed, player.reed)
         self.current_reed = 0
 
     def describe(self):
@@ -53,6 +55,7 @@ class TakeWoodAction(Action):
 
     def process(self, player, **kwargs):
         player.wood += self.current_wood
+        print "Took %s wood. Total wood: %s" % (self.current_wood, player.wood)
         self.current_wood = 0
 
     def describe(self):
@@ -72,6 +75,7 @@ class TakeFishingAction(Action):
 
     def process(self, player, **kwargs):
         player.food += self.current_food
+        print "Took %s food. Total food: %s" % (self.current_food, player.food)
         self.current_food = 0
 
     def describe(self):
@@ -85,6 +89,7 @@ class TakeDayLaborerAction(Action):
 
     def process(self, player, **kwargs):
         player.food += 2
+        print "Took 2 food. Total food: %s" % player.food
 
     def describe(self):
         return 'Take 2 food.'
@@ -100,6 +105,7 @@ class TakeGrainAction(Action):
 
     def process(self, player, **kwargs):
         player.grain += 1
+        print "Took 1 grain. Total grain: %s" % player.grain
 
     def describe(self):
         return 'Take 1 grain.'
