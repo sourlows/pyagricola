@@ -17,6 +17,7 @@ class Player(object):
         self.reed = 0
         self.wood = 0
         self.grain = 0
+        self.food = 2
 
     @property
     def has_idle_family_members(self):
@@ -43,5 +44,5 @@ class Player(object):
             member.update()
 
     def draw(self):
-        print "Family Members: %s | Wood: %s | Clay: %s | Reed: %s" % \
-              (len(self.family_members), self.wood, self.clay, self.reed)
+        print "Family Members: %s | Food: %s | Wood: %s | Clay: %s | Reed: %s" % \
+              (len(self.family_members), self.food, self.wood, self.clay, self.reed)

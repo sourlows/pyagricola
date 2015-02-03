@@ -59,6 +59,40 @@ class TakeWoodAction(Action):
         return 'Take %s wood.' % self.current_wood
 
 
+class TakeFishingAction(Action):
+    """
+    Accumulates x food per turn
+    """
+
+    def __init__(self):
+        self.current_food = 0
+
+    def update(self):
+        self.current_food += 1
+
+    def process(self, player, **kwargs):
+        player.food += self.current_food
+        self.current_food = 0
+
+    def describe(self):
+        return 'Take %s food.' % self.current_food
+
+
+class TakeDayLaborerAction(Action):
+    """
+    Does not accumulate.
+    """
+
+    def process(self, player, **kwargs):
+        player.food += 2
+
+    def describe(self):
+        return 'Take 2 food.'
+
+    def update(self):
+        pass
+
+
 class TakeGrainAction(Action):
     """
     Does not accumulate.

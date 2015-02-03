@@ -1,7 +1,7 @@
 import copy
 import logging
 from random import shuffle
-from actions.take import TakeWoodAction, TakeReedAction, TakeClayAction, TestAction, TakeGrainAction
+from actions.take import TakeWoodAction, TakeReedAction, TakeClayAction, TestAction, TakeGrainAction, TakeFishingAction, TakeDayLaborerAction
 
 __author__ = 'djw'
 
@@ -41,11 +41,11 @@ class GameBoard(object):
         'Grain': ActionSpace(action=TakeGrainAction()),
         'Plow': ActionSpace(action=TestAction()),
         'Occupation': ActionSpace(action=TestAction()),
-        'Laborer': ActionSpace(action=TestAction()),
+        'Laborer': ActionSpace(action=TakeDayLaborerAction()),
         'Wood': ActionSpace(action=TakeWoodAction()),
         'Clay': ActionSpace(action=TakeClayAction()),
         'Reed': ActionSpace(action=TakeReedAction()),
-        'Fishing': ActionSpace(action=TestAction()),
+        'Fishing': ActionSpace(action=TakeFishingAction()),
     }
 
     STAGE_ONE_ACTIONS = {
