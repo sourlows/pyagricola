@@ -28,8 +28,10 @@ class Game(object):
             self.player.update()
             self.game_board.update()
             print 'Round: %s' % self.current_round
-            action = self.get_action_input()
-            self.game_board.available_actions[action].take(self.player)
+            while self.player.has_idle_family_members:
+                action = self.get_action_input()
+                self.game_board.available_actions[action].take(self.player)
+                self.player.send_family_member_to_work()
             self.current_round += 1
         self.end()
 

@@ -58,9 +58,10 @@ class TakeWoodAction(Action):
     def describe(self):
         return 'Take %s wood.' % self.current_wood
 
+
 class TakeGrainAction(Action):
     """
-
+    Does not accumulate.
     """
 
     def process(self, player, **kwargs):
@@ -68,6 +69,10 @@ class TakeGrainAction(Action):
 
     def describe(self):
         return 'Take 1 grain.'
+
+    def update(self):
+        pass
+
 
 class TestAction(Action):
     """

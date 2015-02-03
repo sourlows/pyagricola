@@ -21,7 +21,18 @@ class Player(object):
     @property
     def has_idle_family_members(self):
         """ :return: True if the player has at least one idle family member """
-        return next((fm for fm in self.family_members if fm.currently_working), None)
+        return next((fm for fm in self.family_members if not fm.currently_working), None)
+
+    def send_family_member_to_work(self):
+        """"
+        Get the next idle family member and mark them as currently working
+        :raise: ValueError if there are no idle family members
+        """
+        next_fm = next((fm for fm in self.family_members if not fm.currently_working), None)
+        if not next_fm:
+            raise ValueError('No idle family members.')
+
+        next_fm.currently_working = True
 
     def update(self):
         """ Called at the very beginning of a new turn AFTER harvest """
