@@ -1,7 +1,7 @@
 import copy
 import logging
 from random import shuffle
-from actions.take import TakeWoodAction, TakeReedAction, TakeClayAction, TestAction, TakeGrainAction, TakeFishingAction, TakeDayLaborerAction
+from actions.take import TakeWoodAction, TakeReedAction, TakeClayAction, TestAction, TakeGrainAction, TakeFishingAction, TakeDayLaborerAction, TakeSheepAction, TakeStoneAction, TakeBoarAction, TakeCattleAction, TakeVegetableAction
 
 __author__ = 'djw'
 
@@ -49,7 +49,7 @@ class GameBoard(object):
     }
 
     STAGE_ONE_ACTIONS = {
-        'Sheep': ActionSpace(action=TestAction()),
+        'Sheep': ActionSpace(action=TakeSheepAction()),
         'Sow': ActionSpace(action=TestAction()),
         'Improvement': ActionSpace(action=TestAction()),
         'Fences': ActionSpace(action=TestAction()),
@@ -57,18 +57,18 @@ class GameBoard(object):
 
     STAGE_TWO_ACTIONS = {
         'Renovate': ActionSpace(action=TestAction()),
-        'Stone': ActionSpace(action=TestAction()),
+        'Stone': ActionSpace(action=TakeStoneAction()),
         'Growth': ActionSpace(action=TestAction()),
     }
 
     STAGE_THREE_ACTIONS = {
-        'Boar': ActionSpace(action=TestAction()),
-        'Vegetable': ActionSpace(action=TestAction()),
+        'Boar': ActionSpace(action=TakeBoarAction()),
+        'Vegetable': ActionSpace(action=TakeVegetableAction()),
     }
 
     STAGE_FOUR_ACTIONS = {
-        'Cattle': ActionSpace(action=TestAction()),
-        'Stone2': ActionSpace(action=TestAction()),
+        'Cattle': ActionSpace(action=TakeCattleAction()),
+        'Stone2': ActionSpace(action=TakeStoneAction()),
     }
 
     STAGE_FIVE_ACTIONS = {

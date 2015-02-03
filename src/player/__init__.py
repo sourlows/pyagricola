@@ -16,7 +16,12 @@ class Player(object):
         self.clay = 0
         self.reed = 0
         self.wood = 0
+        self.stone = 0
         self.grain = 0
+        self.vegetable = 0
+        self.sheep = 0
+        self.boar = 0
+        self.cattle = 0
         self.food = 2
 
     @property

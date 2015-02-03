@@ -62,6 +62,26 @@ class TakeWoodAction(Action):
         return 'Take %s wood.' % self.current_wood
 
 
+class TakeStoneAction(Action):
+    """
+    Accumulates x stone per turn
+    """
+
+    def __init__(self):
+        self.current_stone = 0
+
+    def update(self):
+        self.current_stone += 1
+
+    def process(self, player, **kwargs):
+        player.stone += self.current_stone
+        print "Took %s stone. Total stone: %s" % (self.current_stone, player.stone)
+        self.current_stone = 0
+
+    def describe(self):
+        return 'Take %s stone.' % self.current_stone
+
+
 class TakeFishingAction(Action):
     """
     Accumulates x food per turn
@@ -80,6 +100,66 @@ class TakeFishingAction(Action):
 
     def describe(self):
         return 'Take %s food.' % self.current_food
+
+
+class TakeSheepAction(Action):
+    """
+    Accumulates x sheep per turn
+    """
+
+    def __init__(self):
+        self.current_sheep = 0
+
+    def update(self):
+        self.current_sheep += 1
+
+    def process(self, player, **kwargs):
+        player.sheep += self.current_sheep
+        print "Took %s sheep. Total sheep: %s" % (self.current_sheep, player.sheep)
+        self.current_sheep = 0
+
+    def describe(self):
+        return 'Take %s sheep.' % self.current_sheep
+
+
+class TakeBoarAction(Action):
+    """
+    Accumulates x boar per turn
+    """
+
+    def __init__(self):
+        self.current_boar = 0
+
+    def update(self):
+        self.current_boar += 1
+
+    def process(self, player, **kwargs):
+        player.boar += self.current_boar
+        print "Took %s boar. Total boar: %s" % (self.current_boar, player.boar)
+        self.current_boar = 0
+
+    def describe(self):
+        return 'Take %s boar.' % self.current_boar
+
+
+class TakeCattleAction(Action):
+    """
+    Accumulates x cattle per turn
+    """
+
+    def __init__(self):
+        self.current_cattle = 0
+
+    def update(self):
+        self.current_cattle += 1
+
+    def process(self, player, **kwargs):
+        player.cattle += self.current_cattle
+        print "Took %s cattle. Total cattle: %s" % (self.current_cattle, player.cattle)
+        self.current_cattle = 0
+
+    def describe(self):
+        return 'Take %s cattle.' % self.current_cattle
 
 
 class TakeDayLaborerAction(Action):
@@ -109,6 +189,22 @@ class TakeGrainAction(Action):
 
     def describe(self):
         return 'Take 1 grain.'
+
+    def update(self):
+        pass
+
+
+class TakeVegetableAction(Action):
+    """
+    Does not accumulate.
+    """
+
+    def process(self, player, **kwargs):
+        player.vegetable += 1
+        print "Took 1 vegetable. Total vegetable: %s" % player.vegetable
+
+    def describe(self):
+        return 'Take 1 vegetable.'
 
     def update(self):
         pass
