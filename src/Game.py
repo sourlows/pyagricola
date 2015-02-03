@@ -50,7 +50,7 @@ class Game(object):
         return score
 
     def get_action_input(self):
-        action_input = raw_input('Please type an action: ')
+        action_input = raw_input('Please type an action: ').lower()
         if action_input in self.game_board.available_actions.keys():
             return action_input
         elif action_input == 'player':

@@ -36,48 +36,48 @@ class GameBoard(object):
     Manages the game board and actions available to the player
     """
     DEFAULT_ACTIONS = {
-        'Rooms': ActionSpace(action=TestAction()),
-        'Starting': ActionSpace(action=TestAction()),
-        'Grain': ActionSpace(action=TakeGrainAction()),
-        'Plow': ActionSpace(action=TestAction()),
-        'Occupation': ActionSpace(action=TestAction()),
-        'Laborer': ActionSpace(action=TakeDayLaborerAction()),
-        'Wood': ActionSpace(action=TakeWoodAction()),
-        'Clay': ActionSpace(action=TakeClayAction()),
-        'Reed': ActionSpace(action=TakeReedAction()),
-        'Fishing': ActionSpace(action=TakeFishingAction()),
+        'rooms': ActionSpace(action=TestAction()),
+        'starting': ActionSpace(action=TestAction()),
+        'grain': ActionSpace(action=TakeGrainAction()),
+        'plow': ActionSpace(action=TestAction()),
+        'occupation': ActionSpace(action=TestAction()),
+        'laborer': ActionSpace(action=TakeDayLaborerAction()),
+        'wood': ActionSpace(action=TakeWoodAction()),
+        'clay': ActionSpace(action=TakeClayAction()),
+        'reed': ActionSpace(action=TakeReedAction()),
+        'fishing': ActionSpace(action=TakeFishingAction()),
     }
 
     STAGE_ONE_ACTIONS = {
-        'Sheep': ActionSpace(action=TakeSheepAction()),
-        'Sow': ActionSpace(action=TestAction()),
-        'Improvement': ActionSpace(action=TestAction()),
-        'Fences': ActionSpace(action=TestAction()),
+        'sheep': ActionSpace(action=TakeSheepAction()),
+        'sow': ActionSpace(action=TestAction()),
+        'improvement': ActionSpace(action=TestAction()),
+        'fences': ActionSpace(action=TestAction()),
     }
 
     STAGE_TWO_ACTIONS = {
-        'Renovate': ActionSpace(action=TestAction()),
-        'Stone': ActionSpace(action=TakeStoneAction()),
-        'Growth': ActionSpace(action=TestAction()),
+        'renovate': ActionSpace(action=TestAction()),
+        'stone': ActionSpace(action=TakeStoneAction()),
+        'growth': ActionSpace(action=TestAction()),
     }
 
     STAGE_THREE_ACTIONS = {
-        'Boar': ActionSpace(action=TakeBoarAction()),
-        'Vegetable': ActionSpace(action=TakeVegetableAction()),
+        'boar': ActionSpace(action=TakeBoarAction()),
+        'vegetable': ActionSpace(action=TakeVegetableAction()),
     }
 
     STAGE_FOUR_ACTIONS = {
-        'Cattle': ActionSpace(action=TakeCattleAction()),
-        'Stone2': ActionSpace(action=TakeStoneAction()),
+        'cattle': ActionSpace(action=TakeCattleAction()),
+        'stone2': ActionSpace(action=TakeStoneAction()),
     }
 
     STAGE_FIVE_ACTIONS = {
-        'PlowAndSow': ActionSpace(action=TestAction()),
-        'Overgrowth': ActionSpace(action=TestAction()),
+        'plowandsow': ActionSpace(action=TestAction()),
+        'overgrowth': ActionSpace(action=TestAction()),
     }
 
     STAGE_SIX_ACTIONS = {
-        'RenovateFence': ActionSpace(action=TestAction()),
+        'renovatefence': ActionSpace(action=TestAction()),
     }
 
     def __init__(self):
@@ -120,4 +120,4 @@ class GameBoard(object):
 
     def draw(self):
         for key, action_space in self.available_actions.iteritems():
-            print '%s|%s' %(action_space.describe(), key)
+            print '%s|%s' %(action_space.describe(), key.capitalize())
