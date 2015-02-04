@@ -1,5 +1,6 @@
 import logging
 import sys
+from actions import CancelledActionException
 from game_board import GameBoard
 from player import Player
 
@@ -31,7 +32,10 @@ class Game(object):
             while self.player.has_idle_family_members:
                 action = self.get_action_input()
                 if not self.game_board.available_actions[action].is_occupied:
-                    self.game_board.available_actions[action].take(self.player)
+                    try:
+                        self.game_board.available_actions[action].take(self.player)
+                    except CancelledActionException:
+                        continue
                     self.player.send_family_member_to_work()
                 else:
                     print 'The %s space is already occupied. Type -a to see the board.' % action

@@ -76,7 +76,11 @@ class CompositeAndOrAction(Action):
 
     def determine_actions_to_run(self):
         while len(self.actions_to_run) < 2:
-            key = self.get_next_action_key()
+            try:
+                key = self.get_next_action_key()
+            except InvalidActionException as e:
+                print e.message  # show them the error and ask again
+                continue
             if not key:
                 return  # return immediately if the user does not want to perform another subaction
             self.actions_to_run.append(self.subactions[key])
