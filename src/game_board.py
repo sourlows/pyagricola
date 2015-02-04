@@ -120,4 +120,4 @@ class GameBoard(object):
 
     def draw(self):
         for key, action_space in self.available_actions.iteritems():
-            print '%s|%s' %(action_space.describe(), key.capitalize())
+            print '%s|%s' % (action_space.describe(), key.capitalize())

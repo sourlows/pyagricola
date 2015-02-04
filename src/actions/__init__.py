@@ -1,3 +1,5 @@
+from actions.exceptions import CancelledActionException, InvalidActionException
+
 __author__ = 'djw'
 """
 This module houses all of the actions that a player may take over the course of a game
@@ -45,3 +47,47 @@ class Action(object):
         Return a string representation of this action. An explanation of what it does.
         """
         raise NotImplementedError()
+
+
+class CompositeAndOrAction(Action):
+    """
+    An action that consists of two possible subactions
+    Either or both actions may be taken in any order
+    """
+
+    subactions = {}
+    actions_to_run = []
+    possible_actions = []
+
+    def get_next_action_key(self):
+        print 'You can perform either or both of the following actions:'
+        for key in self.possible_actions:
+            print '%s|%s' % (self.subactions[key].describe(), key.capitalize())
+        action_input = raw_input('Which action should be done next? (Type "none" to skip an action)').lower()
+
+        if action_input == 'none':
+            return None
+        elif action_input == 'cancel':
+            raise CancelledActionException()
+        elif action_input not in self.possible_actions:
+            raise InvalidActionException('%s is not a valid action' % action_input)
+
+        return action_input
+
+    def determine_actions_to_run(self):
+        while len(self.actions_to_run) < 2:
+            key = self.get_next_action_key()
+            if not key:
+                return  # return immediately if the user does not want to perform another subaction
+            self.actions_to_run.append(self.subactions[key])
+            self.possible_actions.remove(key)
+
+    def run(self, player=None, **kwargs):
+        # clear actions to run
+        self.actions_to_run = []
+        self.possible_actions = self.subactions.keys()
+
+        self.determine_actions_to_run()
+
+        for action in self.actions_to_run:
+            action.run()
