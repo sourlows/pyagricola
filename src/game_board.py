@@ -1,6 +1,8 @@
 import copy
 import logging
 from random import shuffle
+from actions import CancelledActionException
+from actions.field import TestCompositeFieldAction
 from actions.take import TakeWoodAction, TakeReedAction, TakeClayAction, TestAction, TakeGrainAction, TakeFishingAction, TakeDayLaborerAction, TakeSheepAction, TakeStoneAction, TakeBoarAction, TakeCattleAction, TakeVegetableAction
 
 __author__ = 'djw'
@@ -20,7 +22,11 @@ class ActionSpace(object):
         Occupy this space and execute its action(s)
         """
         self.is_occupied = True
-        self.action.run(player=player)
+        try:
+            self.action.run(player=player)
+        except CancelledActionException as e:
+            self.is_occupied = False
+            raise e
 
     def update(self):
         self.is_occupied = False
@@ -36,7 +42,7 @@ class GameBoard(object):
     Manages the game board and actions available to the player
     """
     DEFAULT_ACTIONS = {
-        'rooms': ActionSpace(action=TestAction()),
+        'rooms': ActionSpace(action=TestCompositeFieldAction()),
         'starting': ActionSpace(action=TestAction()),
         'grain': ActionSpace(action=TakeGrainAction()),
         'plow': ActionSpace(action=TestAction()),

@@ -56,12 +56,12 @@ class CompositeAndOrAction(Action):
     """
 
     subactions = {}
-    actions_to_run = []
-    possible_actions = []
+    _actions_to_run = []
+    _possible_actions = []
 
     def get_next_action_key(self):
         print 'You can perform either or both of the following actions:'
-        for key in self.possible_actions:
+        for key in self._possible_actions:
             print '%s|%s' % (self.subactions[key].describe(), key.capitalize())
         action_input = raw_input('Which action should be done next? (Type "none" to skip an action)').lower()
 
@@ -69,13 +69,13 @@ class CompositeAndOrAction(Action):
             return None
         elif action_input == 'cancel':
             raise CancelledActionException()
-        elif action_input not in self.possible_actions:
+        elif action_input not in self._possible_actions:
             raise InvalidActionException('%s is not a valid action' % action_input)
 
         return action_input
 
     def determine_actions_to_run(self):
-        while len(self.actions_to_run) < 2:
+        while len(self._actions_to_run) < 2:
             try:
                 key = self.get_next_action_key()
             except InvalidActionException as e:
@@ -83,15 +83,19 @@ class CompositeAndOrAction(Action):
                 continue
             if not key:
                 return  # return immediately if the user does not want to perform another subaction
-            self.actions_to_run.append(self.subactions[key])
-            self.possible_actions.remove(key)
+            self._actions_to_run.append(self.subactions[key])
+            self._possible_actions.remove(key)
+
+    def update(self):
+        for key in self.subactions.keys():
+            self.subactions[key].update()
 
     def run(self, player=None, **kwargs):
         # clear actions to run
-        self.actions_to_run = []
-        self.possible_actions = self.subactions.keys()
+        self._actions_to_run = []
+        self._possible_actions = self.subactions.keys()
 
         self.determine_actions_to_run()
 
-        for action in self.actions_to_run:
+        for action in self._actions_to_run:
             action.run()

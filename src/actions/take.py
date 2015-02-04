@@ -219,7 +219,22 @@ class TestAction(Action):
         pass
 
     def process(self, player, **kwargs):
+        print "Took test action."
+
+    def describe(self):
+        return 'Filler action to be implemented later.'
+
+
+class TestAction2(Action):
+    """
+    Filler while other actions are not yet implemented, does nothing
+    """
+
+    def update(self):
         pass
+
+    def process(self, player, **kwargs):
+        print "Took other test action!"
 
     def describe(self):
         return 'Filler action to be implemented later.'
