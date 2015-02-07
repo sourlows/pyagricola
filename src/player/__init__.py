@@ -1,4 +1,5 @@
 import logging
+from field import Field
 from player.family_member import FamilyMember
 
 __author__ = 'djw'
@@ -23,6 +24,9 @@ class Player(object):
         self.boar = 0
         self.cattle = 0
         self.food = 2
+        self.field = Field()
+
+
 
     @property
     def has_idle_family_members(self):
