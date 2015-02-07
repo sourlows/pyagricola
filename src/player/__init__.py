@@ -7,6 +7,7 @@ __author__ = 'djw'
 This module houses the player class and game entities under its control
 """
 
+
 class Player(object):
     """
     The representation of the player and his items/properties
@@ -25,8 +26,6 @@ class Player(object):
         self.cattle = 0
         self.food = 2
         self.field = Field()
-
-
 
     @property
     def has_idle_family_members(self):
