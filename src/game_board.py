@@ -2,7 +2,7 @@ import copy
 import logging
 from random import shuffle
 from actions import CancelledActionException
-from actions.field import TestCompositeFieldAction, BuildRoomAction
+from actions.node_actions import TestCompositeFieldAction, BuildRoomAction
 from actions.take import TakeWoodAction, TakeReedAction, TakeClayAction, TestAction, TakeGrainAction, TakeFishingAction, TakeDayLaborerAction, TakeSheepAction, TakeStoneAction, TakeBoarAction, TakeCattleAction, TakeVegetableAction
 
 __author__ = 'djw'

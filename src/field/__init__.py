@@ -57,12 +57,24 @@ class Field(graph):
         self.index_matrix[1][1].item = RoomItem()
         self.index_matrix[2][1].item = RoomItem()
 
+    @property
+    def room_material(self):
+        # all nodes with room must have the same material type
+        for node in self.nodes():
+            if node.item and hasattr(node.item, 'material'):
+                # so just return the first one we find
+                return node.item.material
+        return None
+
+    def add_item_to_node(self, x, y, item):
+        if self.index_matrix[y][x].item:
+            raise ValueError('The tile at %s %s is already occupied.' % (x, y))
+        self.index_matrix[y][x].item = item
+
     def draw(self):
         for y in xrange(1, 4):
+            # write out each row of nodes on a separate line
             desc = ""
             for x in xrange(1, 6):
-                #index_string = '%s%s' % (y, x)
-                #node = FieldNode(label=index_string)
-                #self.add_node(node)
                 desc += self.index_matrix[y][x].describe()
             print desc

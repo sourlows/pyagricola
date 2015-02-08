@@ -59,6 +59,8 @@ class Game(object):
             return action_input
         elif action_input == 'player':
             self.player.draw()
+        elif action_input == 'field':
+            self.player.field.draw()
         elif action_input == '-a':
             self.game_board.draw()
         else:

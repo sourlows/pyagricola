@@ -36,22 +36,22 @@ class RoomItem(FieldNodeItem):
     def __init__(self, material='wood'):
         if material not in self.MATERIAL_CHOICES:
             raise ValueError('Invalid material %s not in %s' % (material, self.MATERIAL_CHOICES))
-        self._material = material
+        self.material = material
 
     def set_material(self, material):
         if material not in self.MATERIAL_CHOICES:
             raise ValueError('Invalid material %s not in %s' % (material, self.MATERIAL_CHOICES))
-        self._material = material
+        self.material = material
 
     def update(self):
         pass  # rooms do not update from turn to turn
 
     def score(self):
-        if self._material == 'wood':
+        if self.material == 'wood':
             return 0
-        elif self._material == 'clay':
+        elif self.material == 'clay':
             return 1
-        elif self._material == 'stone':
+        elif self.material == 'stone':
             return 2
 
     def describe(self):
