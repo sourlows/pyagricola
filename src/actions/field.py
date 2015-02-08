@@ -30,8 +30,9 @@ class BuildRoomAction(Action):
         pass
 
     def process(self, player, **kwargs):
-        player.field.draw()
         # TODO: set material
+        # TODO: validate player has resources
+        player.draw()
         # TODO: ask for build coordinates
         # TODO: try build, catch errors
 
