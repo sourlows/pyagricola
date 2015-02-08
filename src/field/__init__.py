@@ -1,3 +1,4 @@
+from field.node_item import RoomItem
 from pygraph.classes.graph import graph
 __author__ = 'Eliniel'
 """
@@ -17,6 +18,13 @@ class FieldNode(object):
         """ Called at the beginning of each turn """
         if self.item:
             self.item.update()
+
+    def describe(self):
+        if not self.item:
+            return 'e'
+        else:
+            #print 'drawing node %s' % self.label
+            return self.item.describe()
 
 
 class Field(graph):
@@ -44,3 +52,17 @@ class Field(graph):
         for x in xrange(0, 7):
             for y in xrange(0, 4):
                 self.add_edge((self.index_matrix[y][x], self.index_matrix[y+1][x]))
+
+        # build initial rooms
+        self.index_matrix[1][1].item = RoomItem()
+        self.index_matrix[2][1].item = RoomItem()
+
+    def draw(self):
+        for y in xrange(1, 4):
+            desc = ""
+            for x in xrange(1, 6):
+                #index_string = '%s%s' % (y, x)
+                #node = FieldNode(label=index_string)
+                #self.add_node(node)
+                desc += self.index_matrix[y][x].describe()
+            print desc

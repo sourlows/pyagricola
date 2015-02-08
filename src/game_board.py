@@ -2,7 +2,7 @@ import copy
 import logging
 from random import shuffle
 from actions import CancelledActionException
-from actions.field import TestCompositeFieldAction
+from actions.field import TestCompositeFieldAction, BuildRoomAction
 from actions.take import TakeWoodAction, TakeReedAction, TakeClayAction, TestAction, TakeGrainAction, TakeFishingAction, TakeDayLaborerAction, TakeSheepAction, TakeStoneAction, TakeBoarAction, TakeCattleAction, TakeVegetableAction
 
 __author__ = 'djw'
@@ -42,7 +42,7 @@ class GameBoard(object):
     Manages the game board and actions available to the player
     """
     DEFAULT_ACTIONS = {
-        'rooms': ActionSpace(action=TestCompositeFieldAction()),
+        'rooms': ActionSpace(action=BuildRoomAction()),
         'starting': ActionSpace(action=TestAction()),
         'grain': ActionSpace(action=TakeGrainAction()),
         'plow': ActionSpace(action=TestAction()),
