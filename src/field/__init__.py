@@ -67,6 +67,9 @@ class Field(graph):
         return None
 
     def add_item_to_node(self, x, y, item):
+        if not 1 <= x <= 5 or not 1 <= y <= 3:
+            raise ValueError('The coordinates x: %s, y: %s were invalid. '
+                             'X must be between 1 and 5, Y must be between 1 and 3' % (x, y))
         if self.index_matrix[y][x].item:
             raise ValueError('The tile at %s %s is already occupied.' % (x, y))
         self.index_matrix[y][x].item = item

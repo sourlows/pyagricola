@@ -25,9 +25,11 @@ class BuildRoomAction(Action):
     """
 
     @classmethod
-    def parse_coordinates(cls, input):
-        # TODO implement this
-        return 3, 1
+    def parse_coordinates(cls, coord_input):
+        coords = list(coord_input.replace(" ", ""))
+        x = int(coords[0])
+        y = int(coords[1])
+        return x, y
 
     def update(self):
         pass
@@ -46,12 +48,31 @@ class BuildRoomAction(Action):
             raise CancelledActionException('Need 5 wood and 2 reed to build a room. ' +
                                            'You currently have %s wood and %s reed.' % (player.wood, player.reed))
         player.field.draw()
-        coordinates_input = raw_input('Write the coordinates of the new room')
-        x, y = self.parse_coordinates(coordinates_input)
-        player.field.add_item_to_node(x, y, RoomItem())
+
+        correct_input = False
+        while not correct_input:
+            try:
+                coordinates_input = raw_input('Write the coordinates of the new room: (eg \'31\' or \'3 1\')')
+                if coordinates_input.lower() == 'cancel':
+                    raise CancelledActionException()
+                x, y = self.parse_coordinates(coordinates_input)
+                player.field.add_item_to_node(x, y, RoomItem())
+                correct_input = True
+            except ValueError as e:
+                print e.message
+
+        self.adjust_player_resources(material, player)
         print 'Built a %s room' % material
         player.field.draw()
 
-
     def describe(self):
         return 'Build a new room for your house.'
+
+    def adjust_player_resources(self, material, player):
+        if material == 'wood':
+            player.wood -= 5
+        elif material == 'clay':
+            player.clay -= 5
+        elif material == 'stone':
+            player.stone -= 5
+        player.reed -= 2

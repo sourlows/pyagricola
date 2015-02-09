@@ -34,7 +34,9 @@ class Game(object):
                 if not self.game_board.available_actions[action].is_occupied:
                     try:
                         self.game_board.available_actions[action].take(self.player)
-                    except CancelledActionException:
+                    except CancelledActionException as e:
+                        if e.message:
+                            print e.message
                         continue
                     self.player.send_family_member_to_work()
                 else:
