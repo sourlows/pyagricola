@@ -1,6 +1,7 @@
 from actions import CompositeAndOrAction, Action, CancelledActionException
 from actions.take import TestAction, TestAction2
 from field import RoomItem
+from field.node_item import StableItem
 
 __author__ = 'djw'
 
@@ -76,3 +77,53 @@ class BuildRoomAction(Action):
         elif material == 'stone':
             player.stone -= 5
         player.reed -= 2
+
+
+class BuildStablesAction(Action):
+    """
+    Builds a number of stables in open spaces on the player's field
+    """
+
+    def describe(self):
+        return 'Build stables for your field.'
+
+    @classmethod
+    def parse_coordinates(cls, coord_input):
+        coords = list(coord_input.replace(" ", ""))
+        x = int(coords[0])
+        y = int(coords[1])
+        return x, y
+
+    def has_resources_for_stables(self, count, player):
+        return player.wood >=2*int(count)
+
+    def adjust_player_resources(self, count, player):
+        player.wood = player.wood - 2*int(count)
+
+    def process(self, player, **kwargs):
+        player.field.draw()
+        count = raw_input('How many stables to build?')
+        if count == 'cancel':
+            raise CancelledActionException()
+
+        if not self.has_resources_for_stables(count, player):
+            raise CancelledActionException('Need %s wood for %s stables; you have %s wood.' %
+                                           (2*int(count), count, player.wood))
+        stablesBuilt = 0
+        while stablesBuilt != int(count):
+            try:
+                coordinates_input = raw_input('Write the coordinates of stables %s: (eg \'31\' or \'3 1\')')
+                if coordinates_input.lower() == 'cancel':
+                    raise CancelledActionException()
+                x, y = self.parse_coordinates(coordinates_input)
+                player.field.add_item_to_node(x, y, StableItem())
+                stablesBuilt += 1
+            except ValueError as e:
+                print e.message
+
+        self.adjust_player_resources(count, player)
+        print 'Built %s stables.' % count
+        player.field.draw()
+
+    def update(self):
+        pass

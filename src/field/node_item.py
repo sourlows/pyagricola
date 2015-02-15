@@ -56,3 +56,17 @@ class RoomItem(FieldNodeItem):
 
     def describe(self):
         return u"\u25A1"  # white square (unicode)
+
+class StableItem(FieldNodeItem):
+    """
+    A stable on the player's field board
+    """
+
+    def update(self):
+        pass
+
+    def score(self):
+        return 1
+
+    def describe(self):
+        return u"\u039E" # Greek letter Xi (unicode)
