@@ -13,6 +13,14 @@ def parse_coordinates(coord_input):
         return x, y
 
 
+def is_whole_number(input_string):
+    try:
+        int(input_string)
+        return True
+    except ValueError:
+        return False
+
+
 class Action(object):
     """
     Actions are taken by players, they may have preconditions, postconditions, and may be mutated by each other

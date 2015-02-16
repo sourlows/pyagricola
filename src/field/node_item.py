@@ -71,6 +71,7 @@ class RoomItem(FieldNodeItem):
     def describe(self):
         return u"\u25A1"  # white square (unicode)
 
+
 class StableItem(FieldNodeItem):
     """
     A stable on the player's field board
