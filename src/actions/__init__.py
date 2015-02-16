@@ -113,4 +113,4 @@ class CompositeAndOrAction(Action):
         self.determine_actions_to_run()
 
         for action in self._actions_to_run:
-            action.run()
+            action.run(player)

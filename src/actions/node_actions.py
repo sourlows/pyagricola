@@ -122,5 +122,16 @@ class BuildStablesAction(Action):
     def update(self):
         pass
 
-    def parse_coordinates(self, coordinates_input):
-        pass
+
+class RoomsOrStablesAction(CompositeAndOrAction):
+    """
+    Filler while other actions are not yet implemented, does nothing
+    """
+
+    subactions = {
+        'rooms': BuildRoomAction(),
+        'stables': BuildStablesAction(),
+    }
+
+    def describe(self):
+        return 'Build a room and/or stables'
