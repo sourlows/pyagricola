@@ -1,4 +1,4 @@
-from actions import Action, CancelledActionException
+from actions import Action, CancelledActionException, parse_coordinates
 import field
 __author__ = 'djw'
 
@@ -103,16 +103,30 @@ class TakeFishingAction(Action):
         return 'Take %s food.' % self.current_food
 
 
-class TakeSheepAction(Action):
+class TakeAnimalAction(Action):
+    """
+    Abstract class containing the logic for placing animals on to the player's field
+    """
+    @classmethod
+    def place_animal(cls, player, animal_type, count):
+        correct_input = False
+        while not correct_input:
+            try:
+                coordinates_input = raw_input('Where would you like to place the %s? (eg \'31\' or \'3 1\')' %
+                                              animal_type)
+                if coordinates_input.lower() == 'cancel':
+                    raise CancelledActionException()
+                x, y = parse_coordinates(coordinates_input)
+                player.field.update_node_animals(x, y, animal_type, count)
+                correct_input = True
+            except ValueError as e:
+                print e.message
+
+
+class TakeSheepAction(TakeAnimalAction):
     """
     Accumulates x sheep per turn
     """
-    @classmethod
-    def parse_coordinates(cls, coord_input):
-        coords = list(coord_input.replace(" ", ""))
-        x = int(coords[0])
-        y = int(coords[1])
-        return x, y
 
     def __init__(self):
         self.current_sheep = 0
@@ -122,35 +136,19 @@ class TakeSheepAction(Action):
 
     def process(self, player, **kwargs):
         player.field.draw()
-        correct_input = False
-        while not correct_input:
-            try:
-                coordinates_input = raw_input('Where would you like to place the sheep? (eg \'31\' or \'3 1\')')
-                if coordinates_input.lower() == 'cancel':
-                    raise CancelledActionException()
-                x, y = self.parse_coordinates(coordinates_input)
-                player.field.update_node_animals(x, y, 'sheep', self.current_sheep)
-                correct_input = True
-            except ValueError as e:
-                print e.message
+        self.place_animal(player, 'sheep', self.current_sheep)
 
-        print 'Took %s sheep. Total cattle %s' % (self.current_sheep, player.cattle)
+        print 'Took %s sheep. Total sheep %s' % (self.current_sheep, player.cattle)
         self.current_sheep = 0
 
     def describe(self):
         return 'Take %s sheep.' % self.current_sheep
 
 
-class TakeBoarAction(Action):
+class TakeBoarAction(TakeAnimalAction):
     """
     Accumulates x boar per turn
     """
-    @classmethod
-    def parse_coordinates(cls, coord_input):
-        coords = list(coord_input.replace(" ", ""))
-        x = int(coords[0])
-        y = int(coords[1])
-        return x, y
 
     def __init__(self):
         self.current_boar = 0
@@ -160,17 +158,7 @@ class TakeBoarAction(Action):
 
     def process(self, player, **kwargs):
         player.field.draw()
-        correct_input = False
-        while not correct_input:
-            try:
-                coordinates_input = raw_input('Where would you like to place the boar(s)? (eg \'31\' or \'3 1\')')
-                if coordinates_input.lower() == 'cancel':
-                    raise CancelledActionException()
-                x, y = self.parse_coordinates(coordinates_input)
-                player.field.update_node_animals(x, y, 'boar', self.current_boar)
-                correct_input = True
-            except ValueError as e:
-                print e.message
+        self.place_animal(player, 'boar', self.current_boar)
 
         print 'Took %s boar(s). Total boar(s) %s.' % (self.current_boar, player.boar)
         self.current_boar = 0
@@ -179,16 +167,10 @@ class TakeBoarAction(Action):
         return 'Take %s boar.' % self.current_boar
 
 
-class TakeCattleAction(Action):
+class TakeCattleAction(TakeAnimalAction):
     """
     Accumulates x cattle per turn
     """
-    @classmethod
-    def parse_coordinates(cls, coord_input):
-        coords = list(coord_input.replace(" ", ""))
-        x = int(coords[0])
-        y = int(coords[1])
-        return x, y
     
     def __init__(self):
         self.current_cattle = 0
@@ -198,17 +180,7 @@ class TakeCattleAction(Action):
 
     def process(self, player, **kwargs):
         player.field.draw()
-        correct_input = False
-        while not correct_input:
-            try:
-                coordinates_input = raw_input('Where would you like to place the cattle? (eg \'31\' or \'3 1\')')
-                if coordinates_input.lower() == 'cancel':
-                    raise CancelledActionException()
-                x, y = self.parse_coordinates(coordinates_input)
-                player.field.update_node_animals(x, y, 'cattle', self.current_cattle)
-                correct_input = True
-            except ValueError as e:
-                print e.message
+        self.place_animal(player, 'cattle', self.current_cattle)
 
         print 'Took %s cattle. Total cattle %s.' % (self.current_cattle, player.cattle)
         self.current_cattle = 0

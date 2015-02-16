@@ -13,11 +13,11 @@ class FieldNodeItem(object):
 
     def update_animals(self, animal, count):
         if animal == 'sheep':
-            self.sheep += int(count)
+            self.sheep += count
         if animal == 'boar':
-            self.boars += int(count)
+            self.boars += count
         if animal == 'cattle':
-            self.cattle += int(count)
+            self.cattle += count
 
     def update(self):
         """ Called every turn """

@@ -6,6 +6,13 @@ This module houses all of the actions that a player may take over the course of 
 """
 
 
+def parse_coordinates(coord_input):
+        coords = list(coord_input.replace(" ", ""))
+        x = int(coords[0])
+        y = int(coords[1])
+        return x, y
+
+
 class Action(object):
     """
     Actions are taken by players, they may have preconditions, postconditions, and may be mutated by each other
