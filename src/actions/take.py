@@ -1,4 +1,5 @@
-from actions import Action
+from actions import Action, CancelledActionException
+import field
 __author__ = 'djw'
 
 
@@ -106,6 +107,12 @@ class TakeSheepAction(Action):
     """
     Accumulates x sheep per turn
     """
+    @classmethod
+    def parse_coordinates(cls, coord_input):
+        coords = list(coord_input.replace(" ", ""))
+        x = int(coords[0])
+        y = int(coords[1])
+        return x, y
 
     def __init__(self):
         self.current_sheep = 0
@@ -114,8 +121,20 @@ class TakeSheepAction(Action):
         self.current_sheep += 1
 
     def process(self, player, **kwargs):
-        player.sheep += self.current_sheep
-        print "Took %s sheep. Total sheep: %s" % (self.current_sheep, player.sheep)
+        player.field.draw()
+        correct_input = False
+        while not correct_input:
+            try:
+                coordinates_input = raw_input('Where would you like to place the sheep? (eg \'31\' or \'3 1\')')
+                if coordinates_input.lower() == 'cancel':
+                    raise CancelledActionException()
+                x, y = self.parse_coordinates(coordinates_input)
+                player.field.update_node_animals(x, y, 'sheep', self.current_sheep)
+                correct_input = True
+            except ValueError as e:
+                print e.message
+
+        print 'Took %s sheep. Total cattle %s' % (self.current_sheep, player.cattle)
         self.current_sheep = 0
 
     def describe(self):
@@ -126,6 +145,12 @@ class TakeBoarAction(Action):
     """
     Accumulates x boar per turn
     """
+    @classmethod
+    def parse_coordinates(cls, coord_input):
+        coords = list(coord_input.replace(" ", ""))
+        x = int(coords[0])
+        y = int(coords[1])
+        return x, y
 
     def __init__(self):
         self.current_boar = 0
@@ -134,8 +159,20 @@ class TakeBoarAction(Action):
         self.current_boar += 1
 
     def process(self, player, **kwargs):
-        player.boar += self.current_boar
-        print "Took %s boar. Total boar: %s" % (self.current_boar, player.boar)
+        player.field.draw()
+        correct_input = False
+        while not correct_input:
+            try:
+                coordinates_input = raw_input('Where would you like to place the boar(s)? (eg \'31\' or \'3 1\')')
+                if coordinates_input.lower() == 'cancel':
+                    raise CancelledActionException()
+                x, y = self.parse_coordinates(coordinates_input)
+                player.field.update_node_animals(x, y, 'boar', self.current_boar)
+                correct_input = True
+            except ValueError as e:
+                print e.message
+
+        print 'Took %s boar(s). Total boar(s) %s.' % (self.current_boar, player.boar)
         self.current_boar = 0
 
     def describe(self):
@@ -146,7 +183,13 @@ class TakeCattleAction(Action):
     """
     Accumulates x cattle per turn
     """
-
+    @classmethod
+    def parse_coordinates(cls, coord_input):
+        coords = list(coord_input.replace(" ", ""))
+        x = int(coords[0])
+        y = int(coords[1])
+        return x, y
+    
     def __init__(self):
         self.current_cattle = 0
 
@@ -154,8 +197,20 @@ class TakeCattleAction(Action):
         self.current_cattle += 1
 
     def process(self, player, **kwargs):
-        player.cattle += self.current_cattle
-        print "Took %s cattle. Total cattle: %s" % (self.current_cattle, player.cattle)
+        player.field.draw()
+        correct_input = False
+        while not correct_input:
+            try:
+                coordinates_input = raw_input('Where would you like to place the cattle? (eg \'31\' or \'3 1\')')
+                if coordinates_input.lower() == 'cancel':
+                    raise CancelledActionException()
+                x, y = self.parse_coordinates(coordinates_input)
+                player.field.update_node_animals(x, y, 'cattle', self.current_cattle)
+                correct_input = True
+            except ValueError as e:
+                print e.message
+
+        print 'Took %s cattle. Total cattle %s.' % (self.current_cattle, player.cattle)
         self.current_cattle = 0
 
     def describe(self):

@@ -1,4 +1,5 @@
-from field.node_item import RoomItem
+import field
+from field.node_item import RoomItem, StableItem
 from pygraph.classes.graph import graph
 __author__ = 'Eliniel'
 """
@@ -34,7 +35,7 @@ class Field(graph):
     def __init__(self):
         super(Field, self).__init__()
         self.index_matrix = [[0 for x in xrange(7)] for x in xrange(5)]
-        
+
         # Create field nodes in graph
         for y in xrange(0, 5):
             for x in xrange(0, 7):
@@ -81,3 +82,27 @@ class Field(graph):
             for x in xrange(1, 6):
                 desc += self.index_matrix[y][x].describe()
             print desc
+
+    def update_node_animals(self, x, y, animal, count):
+        if not 1 <= x <= 5 or not 1 <= y <= 3:
+            raise ValueError('The coordinates x: %s, y: %s were invalid. '
+                            'X must be between 1 and 5, Y must be between 1 and 3' % (x, y))
+        if self.index_matrix[y][x].item is None:
+            raise ValueError('Animals can only be placed in rooms, fenced pastures, or stables.')
+
+        if isinstance(self.index_matrix[y][x].item, RoomItem):
+            max_animals = 1
+            if count > max_animals or self.index_matrix[y][x].item.sheep == int(1) \
+                    or self.index_matrix[y][x].item.boars == int(1) \
+                    or self.index_matrix[y][x].item.cattle == int(1):
+                raise ValueError('You can only hold one animal in a room')
+            self.index_matrix[y][x].item.update_animals(animal, count)
+        if isinstance(self.index_matrix[y][x].item, StableItem):
+            max_animals = 1
+            # Logic for fences to be added here later;
+            # Currently only the case of an unfenced stable is considered
+            if count > max_animals or self.index_matrix[y][x].item.sheep == int(1) \
+                    or self.index_matrix[y][x].item.boars == int(1) \
+                    or self.index_matrix[y][x].item.cattle == int(1):
+                raise ValueError('You can only hold one animal in a room')
+            self.index_matrix[y][x].item.update_animals(animal, count)

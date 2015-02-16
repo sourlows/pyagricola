@@ -6,6 +6,19 @@ class FieldNodeItem(object):
     An item built on a player's field board, held within a node/cell on that board
     """
 
+    def __init__(self):
+        self.cattle = 0
+        self.boars = 0
+        self.sheep = 0
+
+    def update_animals(self, animal, count):
+        if animal == 'sheep':
+            self.sheep += int(count)
+        if animal == 'boar':
+            self.boars += int(count)
+        if animal == 'cattle':
+            self.cattle += int(count)
+
     def update(self):
         """ Called every turn """
         raise NotImplementedError()
@@ -34,6 +47,7 @@ class RoomItem(FieldNodeItem):
     MATERIAL_CHOICES = frozenset(['wood', 'stone', 'clay'])
 
     def __init__(self, material='wood'):
+        super(RoomItem, self).__init__()
         if material not in self.MATERIAL_CHOICES:
             raise ValueError('Invalid material %s not in %s' % (material, self.MATERIAL_CHOICES))
         self.material = material
