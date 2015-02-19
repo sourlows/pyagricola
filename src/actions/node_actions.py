@@ -1,7 +1,7 @@
 from actions import CompositeAndOrAction, Action, CancelledActionException, parse_coordinates, is_whole_number
 from actions.take import TestAction, TestAction2
 from field import RoomItem
-from field.node_item import StableItem
+from field.node_item import StableItem, PlowedFieldItem
 
 __author__ = 'djw'
 
@@ -90,6 +90,7 @@ class BuildStablesAction(Action):
         player.field.draw()
 
         correct_input = False
+        num_stables = 0
         while not correct_input:
             num_stables = raw_input('How many stables to build?')
             if num_stables == 'cancel':
@@ -121,6 +122,36 @@ class BuildStablesAction(Action):
 
     def update(self):
         pass
+
+
+class PlowFieldAction(Action):
+    """
+    Plow a single space on the player's field board
+    """
+
+    def update(self):
+        pass
+
+    def process(self, player, **kwargs):
+        player.field.draw()
+
+        correct_input = False
+        while not correct_input:
+            try:
+                coordinates_input = raw_input('Write the coordinates of the new room: (eg \'31\' or \'3 1\')')
+                if coordinates_input.lower() == 'cancel':
+                    raise CancelledActionException()
+                x, y = parse_coordinates(coordinates_input)
+                player.field.add_item_to_node(x, y, PlowedFieldItem())
+                correct_input = True
+            except ValueError as e:
+                print e.message
+
+        print 'Plowed a field.'
+        player.field.draw()
+
+    def describe(self):
+        return 'Plow a single space in your field.'
 
 
 class RoomsOrStablesAction(CompositeAndOrAction):

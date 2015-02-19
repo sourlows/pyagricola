@@ -85,3 +85,18 @@ class StableItem(FieldNodeItem):
 
     def describe(self):
         return u"\u039E" # Greek letter Xi (unicode)
+
+
+class PlowedFieldItem(FieldNodeItem):
+    """
+    A space on the player's field board that has been plowed and can be sowed upon
+    """
+
+    def update(self):
+        pass
+
+    def score(self):
+        return 1
+
+    def describe(self):
+        return u"\u25A7" # Square with upper left to lower right fill
