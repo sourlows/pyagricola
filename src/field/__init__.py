@@ -67,6 +67,11 @@ class Field(graph):
                 return node.item.material
         return None
 
+    def get_node_by_coordinate(self, x, y):
+        if not self.index_matrix[y][x]:
+            raise ValueError('Invalid coordinates %s %s' % (x, y))
+        return self.index_matrix[y][x]
+
     def add_item_to_node(self, x, y, item):
         if not 1 <= x <= 5 or not 1 <= y <= 3:
             raise ValueError('The coordinates x: %s, y: %s were invalid. '
@@ -113,5 +118,3 @@ class Field(graph):
                             'X must be between 1 and 5, Y must be between 1 and 3' % (x, y))
         if self.index_matrix[y][x].item is None:
             raise ValueError('Crops can only be placed in plowed fields.')
-
-        if isinstance()

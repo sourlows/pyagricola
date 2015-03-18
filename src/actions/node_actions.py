@@ -1,7 +1,7 @@
 from actions import CompositeAndOrAction, Action, CancelledActionException, parse_coordinates, is_whole_number
 from actions.take import TestAction, TestAction2
 from field import RoomItem
-from field.node_item import StableItem, PlowedFieldItem, SowedFieldItem
+from field.node_item import StableItem, PlowedFieldItem
 
 __author__ = 'djw'
 
@@ -153,6 +153,7 @@ class PlowFieldAction(Action):
     def describe(self):
         return 'Plow a single space in your field.'
 
+
 class SowFieldAction(Action):
     """
     Sow a plowed field on the player's field board
@@ -167,62 +168,87 @@ class SowFieldAction(Action):
         if crop == 'vegetable':
             return player.vegetable >= fields_to_sow
 
-    def process(self, player, **kwargs):
-        player.field.draw()
-        
-        correct_input = False
-        fields_to_sow = 0
-        while not correct_input:
-            num_stables = raw_input('How many fields would you like to sow?')
-            if fields_to_sow == 'cancel':
-                raise CancelledActionException()
-            if is_whole_number(fields_to_sow):
-                fields_to_sow = int(fields_to_sow)
-                correct_input = True
-            else:
-                print '%s is not a whole number, please try again.' % fields_to_sow
-                
-        correct_input = False
-        while not correct_input:
-            grain_count = raw_input('How many fields would you like to sow with grain?')
-            if grain_count == 'cancel':
-                raise CancelledActionException()            
-            if grain_count > fields_to_sow
-                print 'You are not sowing that many fields.'
-            if grain_count <= fields_to_sow
-                if self.has_resources_to_sow(fields_to_sow, 'grain', player):
-                    fields_to_sow = fields_to_sow - grain_count
-                    correct_input=True
-                else:
-                    print 'You don\'t have enough grain to sow that many fields.'
-        
-        correct_input = False
-        while not correct_input:
-            vegetable_count = raw_input('How many fields would you like to sow with vegetables?')
-            if vegetable_count == 'cancel':
-                raise CancelledActionException()            
-            if vegetable_count > fields_to_sow
-                print 'You are not sowing that many fields.'
-            if vegetable_count <= fields_to_sow
-                if self.has_resources_to_sow(fields_to_sow, 'vegetable', player):
-                    fields_to_sow = fields_to_sow - vegetable_count
-                    correct_input=True
-                else:
-                    print 'You don\'t have enough vegetables to sow that many fields.'
+    def _is_node_valid(self, node):
+        if node.item:
+            if not isinstance(node.item, PlowedFieldItem):
+                raise ValueError('The selected field is not plowed')
+            if node.item.has_resources:
+                raise ValueError('The selected field is already sown')
+            return True
+        raise ValueError('The selected field is not plowed')
 
-        fields_sowed = 0
-        fields_to_sow = grain_count
-        while fields_sowed != fields_to_sow:
+    def _select_field_node(self, player):
+        node = None
+        valid_node = False
+        while not valid_node:
+            coordinates_input = raw_input('Write the coordinates of the field to sow: (eg \'31\' or \'3 1\')')
+            if coordinates_input.lower() == 'cancel':
+                raise CancelledActionException()
+            x, y = parse_coordinates(coordinates_input)
+
+            # make them select a field node
             try:
-                coordinates_input = raw_input('Write the coordinates of the field to sow grain on:\
-                                             (eg \'31\' or \'3 1\')')
-                if coordinates_input.lower() == 'cancel':
-                    raise CancelledActionException()
-                x, y = parse_coordinates(coordinates_input)
-                if
-                stables_built += 1
+                node = player.field.get_node_by_coordinate(x, y)
+                valid_node = self._is_node_valid(node)
             except ValueError as e:
                 print e.message
+
+        return node
+
+    def _select_crop_to_sow(self, player):
+        print "You have %s grain and %s vegetables, what type of crop do you wish to sow?" % \
+              (player.grain, player.vegetable)
+
+        crop = None
+        while not crop:
+            input_crop = raw_input('Write the coordinates of the type of crop to sow: (eg \'grain\' or \'vegetable\')')
+            if input_crop == 'cancel':
+                raise CancelledActionException()
+            elif input_crop.strip() in ['grain', 'vegetable']:
+                return input_crop.strip()
+            else:
+                print "%s is not a valid crop type" % input_crop
+
+    def _determine_required_grains_and_vegetables(self, crop):
+        grain = 0
+        vegetable = 0
+        if crop == 'grain':
+            grain += 1
+        if crop == 'vegetable':
+            vegetable += 1
+
+        return grain, vegetable
+
+    def _sow_crop(self, player, node, grain, vegetables):
+        if grain > 0:
+            if player.grain > 0:
+                node.item.grain += 3
+                player.grain -= 1
+            else:
+                raise ValueError("You don't have enough grain to sow a field.")
+        elif vegetables > 0:
+            if player.vegetable > 0:
+                node.item.vegetable += 2
+                player.vegetable -= 1
+            else:
+                raise ValueError("You don't have enough vegetables to sow a field.")
+
+    def process(self, player, **kwargs):
+        player.field.draw()
+
+        finished_sowing = False
+        while not finished_sowing:
+            try:
+                next_node_to_sow = self._select_field_node(player)
+                crop_to_sow = self._select_crop_to_sow(player)
+                grain, vegetables = self._determine_required_grains_and_vegetables(crop_to_sow)
+                self._sow_crop(player, next_node_to_sow, grain, vegetables)
+            except ValueError as e:
+                print e.message
+                continue
+
+            finished_input = raw_input('Type \'more\' to sow another field, type anything else to end this action')
+            finished_sowing = finished_input.strip() != 'more'
 
     def describe(self):
         return 'Sow one or more plowed fields.'

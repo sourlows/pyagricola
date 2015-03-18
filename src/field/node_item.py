@@ -27,6 +27,10 @@ class FieldNodeItem(object):
         if crop == 'vegetables':
             self.vegetables +=2
 
+    @property
+    def has_resources(self):
+        num_resources = self.cattle + self.boars + self.sheep + self.grain + self.vegetables
+        return num_resources > 0
 
     def update(self):
         """ Called every turn """
