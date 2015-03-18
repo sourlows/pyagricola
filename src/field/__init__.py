@@ -106,3 +106,12 @@ class Field(graph):
                     or self.index_matrix[y][x].item.cattle == int(1):
                 raise ValueError('You can only hold one animal in a room')
             self.index_matrix[y][x].item.update_animals(animal, count)
+
+    def update_node_crops(self, x, y, crop, count):
+        if not 1 <= x <= 5 or not 1 <= y <= 3:
+            raise ValueError('The coordinates x: %s, y: %s were invalid. '
+                            'X must be between 1 and 5, Y must be between 1 and 3' % (x, y))
+        if self.index_matrix[y][x].item is None:
+            raise ValueError('Crops can only be placed in plowed fields.')
+
+        if isinstance()

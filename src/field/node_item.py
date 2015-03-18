@@ -10,6 +10,8 @@ class FieldNodeItem(object):
         self.cattle = 0
         self.boars = 0
         self.sheep = 0
+        self.grain = 0
+        self.vegetables = 0
 
     def update_animals(self, animal, count):
         if animal == 'sheep':
@@ -18,6 +20,13 @@ class FieldNodeItem(object):
             self.boars += count
         if animal == 'cattle':
             self.cattle += count
+
+    def update_crop(self, crop):
+        if crop == 'grain':
+            self.grain += 3
+        if crop == 'vegetables':
+            self.vegetables +=2
+
 
     def update(self):
         """ Called every turn """
