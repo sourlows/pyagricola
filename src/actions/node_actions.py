@@ -161,12 +161,6 @@ class SowFieldAction(Action):
 
     def update(self):
         pass
-    
-    def has_resources_to_sow(self, fields_to_sow, crop, player):
-        if crop == 'grain':
-            return player.grain >= fields_to_sow
-        if crop == 'vegetable':
-            return player.vegetable >= fields_to_sow
 
     def _is_node_valid(self, node):
         if node.item:
