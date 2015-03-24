@@ -138,7 +138,7 @@ class PlowFieldAction(Action):
         correct_input = False
         while not correct_input:
             try:
-                coordinates_input = raw_input('Write the coordinates of the new room: (eg \'31\' or \'3 1\')')
+                coordinates_input = raw_input('Write the coordinates of the field to plow: (eg \'31\' or \'3 1\')')
                 if coordinates_input.lower() == 'cancel':
                     raise CancelledActionException()
                 x, y = parse_coordinates(coordinates_input)
@@ -152,6 +152,100 @@ class PlowFieldAction(Action):
 
     def describe(self):
         return 'Plow a single space in your field.'
+
+
+class SowFieldAction(Action):
+    """
+    Sow a plowed field on the player's field board
+    """
+
+    def update(self):
+        pass
+
+    def _is_node_valid(self, node):
+        if node.item:
+            if not isinstance(node.item, PlowedFieldItem):
+                raise ValueError('The selected field is not plowed')
+            if node.item.has_resources:
+                raise ValueError('The selected field is already sown')
+            return True
+        raise ValueError('The selected field is not plowed')
+
+    def _select_field_node(self, player):
+        node = None
+        valid_node = False
+        while not valid_node:
+            coordinates_input = raw_input('Write the coordinates of the field to sow: (eg \'31\' or \'3 1\')')
+            if coordinates_input.lower() == 'cancel':
+                raise CancelledActionException()
+            x, y = parse_coordinates(coordinates_input)
+
+            # make them select a field node
+            try:
+                node = player.field.get_node_by_coordinate(x, y)
+                valid_node = self._is_node_valid(node)
+            except ValueError as e:
+                print e.message
+
+        return node
+
+    def _select_crop_to_sow(self, player):
+        print "You have %s grain and %s vegetables, what type of crop do you wish to sow?" % \
+              (player.grain, player.vegetable)
+
+        crop = None
+        while not crop:
+            input_crop = raw_input('Write the coordinates of the type of crop to sow: (eg \'grain\' or \'vegetable\')')
+            if input_crop == 'cancel':
+                raise CancelledActionException()
+            elif input_crop.strip() in ['grain', 'vegetable']:
+                return input_crop.strip()
+            else:
+                print "%s is not a valid crop type" % input_crop
+
+    def _determine_required_grains_and_vegetables(self, crop):
+        grain = 0
+        vegetable = 0
+        if crop == 'grain':
+            grain += 1
+        if crop == 'vegetable':
+            vegetable += 1
+
+        return grain, vegetable
+
+    def _sow_crop(self, player, node, grain, vegetables):
+        if grain > 0:
+            if player.grain > 0:
+                node.item.grain += 3
+                player.grain -= 1
+            else:
+                raise CancelledActionException("You don't have enough grain to sow a field.")
+        elif vegetables > 0:
+            if player.vegetable > 0:
+                node.item.vegetable += 2
+                player.vegetable -= 1
+            else:
+                raise CancelledActionException("You don't have enough vegetables to sow a field.")
+
+    def process(self, player, **kwargs):
+        player.field.draw()
+
+        finished_sowing = False
+        while not finished_sowing:
+            try:
+                next_node_to_sow = self._select_field_node(player)
+                crop_to_sow = self._select_crop_to_sow(player)
+                grain, vegetables = self._determine_required_grains_and_vegetables(crop_to_sow)
+                self._sow_crop(player, next_node_to_sow, grain, vegetables)
+            except ValueError as e:
+                print e.message
+                continue
+
+            finished_input = raw_input('Type \'more\' to sow another field, type anything else to end this action')
+            finished_sowing = finished_input.strip() != 'more'
+
+    def describe(self):
+        return 'Sow one or more plowed fields.'
 
 
 class RoomsOrStablesAction(CompositeAndOrAction):

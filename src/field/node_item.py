@@ -10,6 +10,8 @@ class FieldNodeItem(object):
         self.cattle = 0
         self.boars = 0
         self.sheep = 0
+        self.grain = 0
+        self.vegetables = 0
 
     def update_animals(self, animal, count):
         if animal == 'sheep':
@@ -19,13 +21,24 @@ class FieldNodeItem(object):
         if animal == 'cattle':
             self.cattle += count
 
+    def update_crop(self, crop):
+        if crop == 'grain':
+            self.grain += 3
+        if crop == 'vegetables':
+            self.vegetables += 2
+
+    @property
+    def has_resources(self):
+        num_resources = self.cattle + self.boars + self.sheep + self.grain + self.vegetables
+        return num_resources > 0
+
     def update(self):
         """ Called every turn """
         raise NotImplementedError()
 
-    def harvest(self):
+    def harvest(self, player):
         """ Initiates and controls the harvest process for this item """
-        pass
+        return
 
     def score(self):
         """
@@ -97,6 +110,16 @@ class PlowedFieldItem(FieldNodeItem):
 
     def score(self):
         return 1
+
+    def harvest(self, player):
+        # harvest crops
+        if self.grain > 0:
+            self.grain -= 1
+            player.grain += 1
+        elif self.vegetables > 0:
+            self.vegetables -= 1
+            player.vegetable += 1
+
 
     def describe(self):
         return u"\u25A7" # Square with upper left to lower right fill

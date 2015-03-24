@@ -20,6 +20,10 @@ class FieldNode(object):
         if self.item:
             self.item.update()
 
+    def harvest(self, player):
+        if self.item:
+            self.item.harvest(player)
+
     def describe(self):
         if not self.item:
             return 'e'
@@ -58,6 +62,12 @@ class Field(graph):
         self.index_matrix[1][1].item = RoomItem()
         self.index_matrix[2][1].item = RoomItem()
 
+    @classmethod
+    def _validate_coordinates(cls, x, y):
+        if not 1 <= x <= 5 or not 1 <= y <= 3:
+            raise ValueError('The coordinates x: %s, y: %s were invalid. '
+                             'X must be between 1 and 5, Y must be between 1 and 3' % (x, y))
+
     @property
     def room_material(self):
         # all nodes with room must have the same material type
@@ -67,10 +77,13 @@ class Field(graph):
                 return node.item.material
         return None
 
+    def get_node_by_coordinate(self, x, y):
+        if not self.index_matrix[y][x]:
+            raise ValueError('Invalid coordinates %s %s' % (x, y))
+        return self.index_matrix[y][x]
+
     def add_item_to_node(self, x, y, item):
-        if not 1 <= x <= 5 or not 1 <= y <= 3:
-            raise ValueError('The coordinates x: %s, y: %s were invalid. '
-                             'X must be between 1 and 5, Y must be between 1 and 3' % (x, y))
+        self._validate_coordinates(x, y)
         if self.index_matrix[y][x].item:
             raise ValueError('The tile at %s %s is already occupied.' % (x, y))
         self.index_matrix[y][x].item = item
@@ -84,9 +97,7 @@ class Field(graph):
             print desc
 
     def update_node_animals(self, x, y, animal, count):
-        if not 1 <= x <= 5 or not 1 <= y <= 3:
-            raise ValueError('The coordinates x: %s, y: %s were invalid. '
-                            'X must be between 1 and 5, Y must be between 1 and 3' % (x, y))
+        self._validate_coordinates(x, y)
         if self.index_matrix[y][x].item is None:
             raise ValueError('Animals can only be placed in rooms, fenced pastures, or stables.')
 
@@ -106,3 +117,7 @@ class Field(graph):
                     or self.index_matrix[y][x].item.cattle == int(1):
                 raise ValueError('You can only hold one animal in a room')
             self.index_matrix[y][x].item.update_animals(animal, count)
+
+    def harvest(self, player):
+        for field_node in self.nodes():
+            field_node.harvest(player)

@@ -2,7 +2,7 @@ import copy
 import logging
 from random import shuffle
 from actions import CancelledActionException
-from actions.node_actions import TestCompositeFieldAction, BuildRoomAction, BuildStablesAction, RoomsOrStablesAction, PlowFieldAction
+from actions.node_actions import TestCompositeFieldAction, BuildRoomAction, BuildStablesAction, RoomsOrStablesAction, PlowFieldAction, SowFieldAction
 from actions.take import TakeWoodAction, TakeReedAction, TakeClayAction, TestAction, TakeGrainAction, TakeFishingAction, TakeDayLaborerAction, TakeSheepAction, TakeStoneAction, TakeBoarAction, TakeCattleAction, TakeVegetableAction
 
 __author__ = 'djw'
@@ -57,7 +57,7 @@ class GameBoard(object):
 
     STAGE_ONE_ACTIONS = {
         'sheep': ActionSpace(action=TakeSheepAction()),
-        'sow': ActionSpace(action=TestAction()),
+        'sow': ActionSpace(action=SowFieldAction()),
         'improvement': ActionSpace(action=TestAction()),
         'fences': ActionSpace(action=TestAction()),
     }
