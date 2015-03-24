@@ -219,13 +219,13 @@ class SowFieldAction(Action):
                 node.item.grain += 3
                 player.grain -= 1
             else:
-                raise ValueError("You don't have enough grain to sow a field.")
+                raise CancelledActionException("You don't have enough grain to sow a field.")
         elif vegetables > 0:
             if player.vegetable > 0:
                 node.item.vegetable += 2
                 player.vegetable -= 1
             else:
-                raise ValueError("You don't have enough vegetables to sow a field.")
+                raise CancelledActionException("You don't have enough vegetables to sow a field.")
 
     def process(self, player, **kwargs):
         player.field.draw()

@@ -20,6 +20,10 @@ class FieldNode(object):
         if self.item:
             self.item.update()
 
+    def harvest(self, player):
+        if self.item:
+            self.item.harvest(player)
+
     def describe(self):
         if not self.item:
             return 'e'
@@ -114,7 +118,6 @@ class Field(graph):
                 raise ValueError('You can only hold one animal in a room')
             self.index_matrix[y][x].item.update_animals(animal, count)
 
-    def update_node_crops(self, x, y, crop, count):
-        self._validate_coordinates(x, y)
-        if self.index_matrix[y][x].item is None:
-            raise ValueError('Crops can only be placed in plowed fields.')
+    def harvest(self, player):
+        for field_node in self.nodes():
+            field_node.harvest(player)

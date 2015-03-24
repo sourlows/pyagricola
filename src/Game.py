@@ -23,6 +23,8 @@ class Game(object):
     # The number of rounds played before the game ends
     GAME_LENGTH = 14
 
+    HARVEST_ROUNDS = frozenset([4, 7, 9, 11, 13, 14])
+
     def run(self):
         # execute the iterative flow of the game
         while self.current_round <= self.GAME_LENGTH:
@@ -41,6 +43,8 @@ class Game(object):
                     self.player.send_family_member_to_work()
                 else:
                     print 'The %s space is already occupied. Type -a to see the board.' % action
+            if self.current_round in self.HARVEST_ROUNDS:
+                self.player.field.harvest(self.player)
             self.current_round += 1
         self.end()
 

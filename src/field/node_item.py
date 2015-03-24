@@ -25,7 +25,7 @@ class FieldNodeItem(object):
         if crop == 'grain':
             self.grain += 3
         if crop == 'vegetables':
-            self.vegetables +=2
+            self.vegetables += 2
 
     @property
     def has_resources(self):
@@ -36,9 +36,9 @@ class FieldNodeItem(object):
         """ Called every turn """
         raise NotImplementedError()
 
-    def harvest(self):
+    def harvest(self, player):
         """ Initiates and controls the harvest process for this item """
-        pass
+        return
 
     def score(self):
         """
@@ -110,6 +110,16 @@ class PlowedFieldItem(FieldNodeItem):
 
     def score(self):
         return 1
+
+    def harvest(self, player):
+        # harvest crops
+        if self.grain > 0:
+            self.grain -= 1
+            player.grain += 1
+        elif self.vegetables > 0:
+            self.vegetables -= 1
+            player.vegetable += 1
+
 
     def describe(self):
         return u"\u25A7" # Square with upper left to lower right fill
