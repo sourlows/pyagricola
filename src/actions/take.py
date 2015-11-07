@@ -137,8 +137,9 @@ class TakeSheepAction(TakeAnimalAction):
     def process(self, player, **kwargs):
         player.field.draw()
         self.place_animal(player, 'sheep', self.current_sheep)
+        player.sheep += self.current_sheep
 
-        print 'Took %s sheep. Total sheep %s' % (self.current_sheep, player.cattle)
+        print 'Took %s sheep. Total sheep %s' % (self.current_sheep, player.sheep)
         self.current_sheep = 0
 
     def describe(self):
@@ -159,6 +160,7 @@ class TakeBoarAction(TakeAnimalAction):
     def process(self, player, **kwargs):
         player.field.draw()
         self.place_animal(player, 'boar', self.current_boar)
+        player.boar += self.current_boar
 
         print 'Took %s boar(s). Total boar(s) %s.' % (self.current_boar, player.boar)
         self.current_boar = 0
@@ -181,6 +183,7 @@ class TakeCattleAction(TakeAnimalAction):
     def process(self, player, **kwargs):
         player.field.draw()
         self.place_animal(player, 'cattle', self.current_cattle)
+        player.cattle += self.current_cattle
 
         print 'Took %s cattle. Total cattle %s.' % (self.current_cattle, player.cattle)
         self.current_cattle = 0

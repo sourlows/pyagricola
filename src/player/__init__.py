@@ -52,5 +52,6 @@ class Player(object):
             member.update()
 
     def draw(self):
-        print "Family Members: %s | Food: %s | Wood: %s | Clay: %s | Reed: %s | Grain: %s | Vegetable: %s" % \
-              (len(self.family_members), self.food, self.wood, self.clay, self.reed, self.grain, self.vegetable)
+        print "Family Members: %s | Food: %s | Wood: %s | Clay: %s | Reed: %s | Grain: %s | Vegetable: %s | Sheep: %s | Boar: %s | Cattle: %s" % \
+              (len(self.family_members), self.food, self.wood, self.clay, self.reed,
+               self.grain, self.vegetable, self.sheep, self.boar, self.cattle)

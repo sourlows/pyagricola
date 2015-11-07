@@ -63,15 +63,15 @@ class Game(object):
         action_input = raw_input('Please type an action: ').lower()
         if action_input in self.game_board.available_actions.keys():
             return action_input
-        elif action_input == 'player':
+        elif action_input == '-p':
             self.player.draw()
-        elif action_input == 'field':
+        elif action_input == '-f':
             self.player.field.draw()
         elif action_input == '-a':
             self.game_board.draw()
         else:
             print 'invalid action: %s' % action_input
-            print 'type -a to see a list of available actions'
+            print 'type -a to see a list of available actions, -p to see your resources, -f to see your field'
         return self.get_action_input()
 
 
